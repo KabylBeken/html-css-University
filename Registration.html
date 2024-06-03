@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Registration </title>
+<link rel="stylesheet" href="Registration.css">
+	<style>
+		 body{
+			margin:0;
+			display: flex;
+			justify-content: center;
+			background-color:#f196bcdc;
+						
+		}
+		input {
+			margin-bottom: 10px;
+		}
+		#form, #error {
+			text-align: center;
+			margin-top: 50px;
+		}
+		#form {
+			display: flex;
+			
+			width: 210px;
+  			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;	
+		}
+		#error {
+			color: red;
+			font-size: 15px;
+			justify-content:baseline;
+		}
+		span {
+			font-size: 20px;
+		}
+		div{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		} 
+				
+	</style>
+</head>
+<body>	
+<div class="container">
+	   <div id="form">
+		<input type="text" id="Login" placeholder="Введите логин">
+		<input type="password" id="Pass" placeholder="Введите пароль">
+		<button onclick="login()">login</button>
+		<button onclick="RegPage()">Go to Register page</button>
+	</div>
+</div>
+<p id="error"></p>
+
+
+	<script >
+
+		 let users = []
+		 let activeUser = null
+
+		 function RegPage(){
+		 	error.innerText = ' '
+		 	form.remove()
+
+		 	let div1 = document.createElement('div')
+			div1.id = 'form'
+
+			let inputName = document.createElement('input')
+			inputName.type = 'text'
+			inputName.id = 'Name'
+			inputName.placeholder = 'Введите имя '
+
+			let inputLogin = document.createElement('input')
+			inputLogin.type = 'text'
+			inputLogin.id = 'Login'
+			inputLogin.placeholder= 'Введите логин'
+
+			let inputPass1 = document.createElement('input')
+			inputPass1.type = 'password'
+			inputPass1.id = 'Pass1'
+			inputPass1.placeholder = 'Введите пароль'
+
+			let inputPass2 = document.createElement('input')
+			inputPass2.type = 'password'
+			inputPass2.id = 'Pass2'
+			inputPass2.placeholder = 'Подтвердите пароль'
+
+			let butReg = document.createElement('button')
+			butReg.innerText = 'Register'
+			butReg.onclick = register
+
+			let butGoToLog = document.createElement('button')
+			butGoToLog.innerText = 'Go To Login Page'
+			butGoToLog.onclick = LoginPage
+
+			div1.append(inputName)
+			div1.append(inputLogin)
+			div1.append(inputPass1)
+			div1.append(inputPass2)
+			div1.append(butReg)
+			div1.append(butGoToLog)
+
+			document.body.prepend(div1)
+
+		 }
+		 function LoginPage(){
+		 	error.innerText = ''
+		 	form.remove()
+
+		 	let div1 = document.createElement('div')
+			div1.id = 'form'
+
+			let inputLogin = document.createElement('input')
+			inputLogin.type = 'text'
+			inputLogin.id = 'Login'
+			inputLogin.placeholder= 'Введите логин'
+
+			let inputPass = document.createElement('input')
+			inputPass.type = 'password'
+			inputPass.id = 'Pass'
+			inputPass.placeholder= 'Введите пароль'
+
+			let butLog = document.createElement('button')
+			butLog.innerText = 'Логин'
+			butLog.onclick = login
+
+			let butGoToReg = document.createElement('button')
+			butGoToReg.innerText = 'Возвращаться в регистрационную страницу'
+			butGoToReg.onclick = RegPage
+
+			div1.append(inputLogin)
+			div1.append(inputPass)
+			div1.append(butLog)
+			div1.append(butGoToReg)
+
+			document.body.prepend(div1)
+		 }
+		 function register(){
+		 	if (Name.value == ''||Login.value == ''||Pass1.value == ''||Pass2.value == '') {
+		 		error.innerText='Введите все данные'
+		 		return
+		 	}
+		 	let u1 ={name: Name.value, login: Login.value, pass: Pass1.value}
+
+	 		if (users.length!==0) {
+	 			for (let i = 0; i < users.length; i++) {
+		 			if (users[i].name==Name.value && users[i].login==Login.value){
+		 				error.innerText='Пользователь с таким логином и паролем уже существует'
+		 				users.splice(i, 1)
+		 			}
+		 		}
+	 		}
+		 	
+	 		if (Pass1.value == Pass2.value) {
+	 			users.push(u1)
+	 		}
+	 		else{
+	 			error.innerText ='Пароли не совпадают'
+	 		}
+	 		LoginPage()
+		 	console.log(users)
+		 }
+		 function login(){
+		 	if (Login.value == ''||Pass.value == '') {
+		 		error.innerText='Введите все данные'
+		 		return
+		 	}
+		 	for (let i = 0; i < users.length; i++) {
+		 		if (users[i].login==Login.value && users[i].pass==Pass.value){
+		 			activeUser=users[i]
+		 			// ProfilePage()
+					 document.location.href="http://127.0.0.1:5500/index.html"
+
+				}
+				else{
+					error.innerText='Не правильный логин или пароль'
+				}
+	 		}
+		}
+		function ProfilePage(){
+			form.remove()
+
+			let div1 = document.createElement('div')
+			div1.id = 'form'
+
+			let dobro = document.createElement('p')
+			dobro.innerText='Добро пожаловать:'+activeUser.login
+
+			let logout = document.createElement('button')
+			logout.innerText = 'Выйти'
+			logout.onclick = Logout
+
+			div1.append(dobro)
+			div1.append(logout)
+
+			document.body.prepend(div1)
+
+		}
+		function Logout(){
+			activeUser=null
+			LoginPage()
+		}
+
+	</script>
+ </body>
+</html>
